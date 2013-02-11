@@ -1,0 +1,71 @@
+[color]
+        pager = true
+        ui = true
+
+[color "branch"]
+        current = green reverse
+        local = cyan
+        remote = magenta
+
+[color "diff"]
+        meta = yellow bold
+        frag = magenta bold
+        old = red bold
+        new = green bold
+
+[color "status"]
+        added = cyan
+        changed = green
+        untracked = cyan reverse
+
+[alias]
+        co = checkout
+        br = branch
+        st = status
+        si = submodule init
+        su = submodule update --recursive
+        sui = submodule update --init --recursive
+        p = !git pull && git sui
+        cp = cherry-pick
+
+        # list tags chronologically 
+        rtag = tag -l *12[a-z]
+
+        #checkout latest tag
+        curtag = !sh -c 'git fetch --tags && git co `git tag -l *12[a-z] | tail -n1` && git su'
+
+        #checks out the most recent tag
+        curtag = !sh -c 'git fetch --tags && git co `git tag -l *12[a-z] | tail -
+
+        # git close [branchname] :: deletes the branch locally and on origin
+        close = !sh -c 'git branch -d $1 && git push origin :$1' -
+
+        # git closeall :: closes all merged branches, save for master and release
+        closeall = !"for i in $(git branch | sed 's/^..//'); do if [[ $i != 'master' && $i != 'release' ]]; then git close $i; fi; done"
+
+        # git mod :: returns list of modified/added files
+        mod = !"git status --porcelain | awk '/\\s?(M|A)/ {print $2}'"
+
+        # git current :: returns current branchname 
+        current = !git branch 2> /dev/null | grep '\\*' | sed -e 's/\\* \\(.*\\)/\\1/'
+
+        # git last [branch] :: returns SHA-1 for the last commit in the specified (or current) branch
+        last = !sh -c 'git log -1 --pretty=oneline $1 | grep -Po "^[0-9a-zA-Z]+"' -
+
+        # git glog [searchstring] [branch] :: Searches [branch] for commits matching [searchstring]
+        grep = !sh -c 'git log --pretty=oneline --reverse $2 | grep $1' -
+
+        # git ls show file commits fors single commit
+        ls = show --pretty="format:" --name-only
+
+        # git dls show file commits between commits, if single commit, between commit and head
+        dls = diff --name-only
+
+        # push current branch to origin
+        po = !git push origin HEAD
+
+        # just cause I do this a lot
+        master = !sh -c 'git co master && git p'
+
+        # Detailed Tree log
+        tlog  = log --format='%Cgreen%h %Creset%C(cyan)%an%Creset%C(magenta)%d%Creset - %s' --graph

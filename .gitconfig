@@ -18,6 +18,9 @@
         changed = green
         untracked = cyan reverse
 
+[push]
+        default = upstream
+
 [alias]
         co = checkout
         br = branch

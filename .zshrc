@@ -18,6 +18,7 @@ rm -f ~/.zcompdump; compinit
 # GIT + custom prompt
 setopt promptsubst
 source "$(brew --prefix)/opt/zsh-git-prompt/zshrc.sh"
+export ZSH_THEME_GIT_PROMPT_CACHE="1"
 local git_status='$(git_super_status)'
 PROMPT="%F{7}%D %*%f %F{5}%d%f ${git_status}"
 
